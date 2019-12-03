@@ -19,6 +19,7 @@
   nil)
 
 (defn read-opcode [memory pos] 
+  ;; get parameters
   [ (get memory (+ 1 pos))
     (get memory (+ 2 pos))
     (get memory (+ 3 pos)) ])
@@ -44,9 +45,27 @@
 (defn run [memory]
   (last (take-while (comp not nil?) (run-seq memory 0))))
 
-(defn restart-1202 [memory]
-  (assoc memory 1 12
-                2 2))
+(defn run-input [input noun verb]
+  (-> input
+      (assoc 1 noun
+             2 verb)
+      (run)
+      (get 0)))
+
+(defn run-target [input]
+  (for [noun (range 0 100)
+        verb (range 0 100)]
+    (do 
+      (println (run-input input noun verb) noun verb)
+      [(run-input input noun verb) noun (+ 1 verb)]))) ; off by one error, but why!!!??!?
+
+(defn run-find-target [input target]
+  (let [[_ noun verb] (last 
+                        (take-while 
+                          (comp #(not= target %) first) 
+                          (run-target input)))]
+    (println noun verb)
+    (+ (* 100 noun) verb)))
 
 (def input
   (-> (slurp "input")
@@ -56,7 +75,8 @@
 
 ;; main
 (println "Part 1:")
-(println (-> input
-            (restart-1202)
-            (run)
-            (get 0)))
+(println (run-input input 12 2))
+
+(def target 70090803)
+(println "Part 2")
+(println (run-find-target input target))
