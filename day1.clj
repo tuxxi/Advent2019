@@ -18,6 +18,6 @@
 
 ;; main
 (println "Day 1, Part 1:")
-(println (day1-1 "input"))
+(println (day1-1 "day1.input"))
 (println "Part 2:")
-(println (day1-2 "input"))
+(println (day1-2 "day1.input"))

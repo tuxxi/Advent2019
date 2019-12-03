@@ -55,20 +55,17 @@
 (defn run-target [input]
   (for [noun (range 0 100)
         verb (range 0 100)]
-    (do 
-      (println (run-input input noun verb) noun verb)
-      [(run-input input noun verb) noun (+ 1 verb)]))) ; off by one error, but why!!!??!?
+    [(run-input input noun verb) noun (+ 1 verb)])) ; off by one error, but why!!!??!?
 
 (defn run-find-target [input target]
   (let [[_ noun verb] (last 
                         (take-while 
                           (comp #(not= target %) first) 
                           (run-target input)))]
-    (println noun verb)
     (+ (* 100 noun) verb)))
 
 (def input
-  (-> (slurp "input")
+  (-> (slurp "day2.input")
       (clojure.string/split #",")
       (->> (mapv #(clojure.string/trim %))
            (mapv #(Integer/parseInt %)))))
@@ -77,6 +74,6 @@
 (println "Part 1:")
 (println (run-input input 12 2))
 
-(def target 70090803)
+(def target 19690720)
 (println "Part 2")
 (println (run-find-target input target))
